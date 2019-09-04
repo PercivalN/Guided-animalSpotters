@@ -19,6 +19,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet private weak var passwordTextField: UITextField!
     @IBOutlet private weak var loginTypeSegmentedControl: UISegmentedControl!
     @IBOutlet private weak var signInButton: UIButton!
+
+	var apiController: APIController?
+	var loginType = LoginType.signUp
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +35,62 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Action Handlers
     
     @IBAction func buttonTapped(_ sender: UIButton) {
-        
+
+		guard let username = usernameTextField.text,
+		let password = passwordTextField.text,
+		!username.isEmpty,
+		!password.isEmpty else { return }
+
+		let user = User(username: username, password: password)
+
+		if loginType == .signUp {
+
+			apiController?.signUp(with: user, completion: { (networkError) in
+
+				if let error = networkError {
+					NSLog("Error occurred during sign up: \(error)")
+
+				} else {
+
+					let alert = UIAlertController(title: "Sign Up Successful", message: "Now please sign in", preferredStyle: .alert)
+
+					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+
+					alert.addAction(okAction)
+
+					DispatchQueue.main.async {
+						self.present(alert, animated: true, completion: {
+							self.loginType = .signIn
+							self.loginTypeSegmentedControl.selectedSegmentIndex = 1
+							self.signInButton.setTitle("Sign In", for: .normal)
+
+
+						})
+					}
+				}
+			})
+
+		} else if loginType == .signIn {
+			apiController?.login(with: user, completion: { (networkError) in
+				if let error = networkError {
+					NSLog("Error occurred during login: \(error)")
+				} else {
+					DispatchQueue.main.async {
+						self.dismiss(animated: true, completion: nil)
+					}
+				}
+			})
+		}
+
     }
     
     @IBAction func signInTypeChanged(_ sender: UISegmentedControl) {
-        
+		if sender.selectedSegmentIndex == 0 {
+			signInButton.setTitle("Sign Up", for: .normal)
+		} else {
+			loginType = .signIn
+			signInButton.setTitle("Sign In", for: .normal)
+		}
     }
 }
 

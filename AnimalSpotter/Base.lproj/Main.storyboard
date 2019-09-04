@@ -79,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdi-kT-dVo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2112" y="-12"/>
+            <point key="canvasLocation" x="2033" y="45"/>
         </scene>
         <!--Animal Spotter-->
         <scene sceneID="y90-0a-iVi">
@@ -121,7 +121,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="fYv-hU-wkc" kind="presentation" identifier="LoginViewModalSegue" id="Tc6-TK-qmq"/>
+                        <segue destination="fYv-hU-wkc" kind="presentation" identifier="LogInViewModalSegue" id="Tc6-TK-qmq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAK-9d-Sq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
